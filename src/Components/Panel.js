@@ -54,12 +54,16 @@ class Tags extends Component{
     state={
         department:DepartData,
         tList:commonD,
-
-
     }
     changeColor = (e) => {
         e.target.style.backgroundColor="rgb(131,209,255)"
     };
+    changeTextColor=(e,index) =>{
+        let myList=DepartData[index].cate
+        this.setState({
+            tList:myList
+        })
+    }
 
     render() {
         return (
