@@ -1,4 +1,18 @@
-import {Breadcrumb, Card, Col, Comment, List, PageHeader, Row, Tooltip, Typography, Button, Form, Input} from "antd";
+import {
+    Breadcrumb,
+    Card,
+    Col,
+    Comment,
+    List,
+    PageHeader,
+    Row,
+    Tooltip,
+    Typography,
+    Button,
+    Form,
+    Input,
+    Skeleton, Divider
+} from "antd";
 import React, {Component, createElement, useState} from "react";
 import './DocterHome.css'
 import Layout, {Header} from "antd/es/layout/layout";
@@ -8,6 +22,10 @@ import Lu from "../../assets/Lu.jpg";import { DislikeOutlined, LikeOutlined, Dis
 import Avatar from "antd/es/avatar/avatar";
 import TextArea from "antd/es/input/TextArea";
 import {doctorList} from "../../MockData/cardData";
+import VirtualList from 'rc-virtual-list';
+import * as PropTypes from "prop-types";
+
+
 
 const { Paragraph, Text, Title} = Typography;
 
@@ -55,6 +73,19 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 
+function InfiniteScroll(props) {
+    return null;
+}
+
+InfiniteScroll.propTypes = {
+    loader: PropTypes.element,
+    next: PropTypes.any,
+    scrollableTarget: PropTypes.string,
+    hasMore: PropTypes.bool,
+    endMessage: PropTypes.element,
+    dataLength: PropTypes.number,
+    children: PropTypes.node
+};
 
 class DoctorHome extends Component {
 
@@ -142,6 +173,9 @@ class DoctorHome extends Component {
     onSubmit(){
 
     }
+    loadMoreData(){
+
+    }
 
     render() {
         return (
@@ -177,6 +211,15 @@ class DoctorHome extends Component {
                     </Row>
                     <div className="interval"/>
                     <Card hoverable className="Comments">
+                        <div
+                            id="scrollableDiv"
+                            style={{
+                                height: 400,
+                                overflow: 'auto',
+                                padding: '0 16px',
+                                border: '1px solid rgba(140, 140, 140, 0.35)',
+                            }}
+                        >
                         <List
                             className="comment-list"
                             header={`该医生共收到 ${this.state.data.length} 条评价`}
@@ -207,6 +250,7 @@ class DoctorHome extends Component {
                                 </li>
                             )}
                         />
+                        </div>
                     </Card>
                     <div className="interval"/>
                     <Card  className="TextArea">

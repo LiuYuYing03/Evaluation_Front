@@ -19,7 +19,7 @@ const testCardClick  = (e) =>{
     console.log(e.target.className)
 }
 
-export default () => {
+const CardList = () => {
     const [ellipsis, setEllipsis] = React.useState(true);
     return (
         <Card hoverable className="showTotal">
@@ -102,4 +102,5 @@ export default () => {
     );
 };
 
+export default CardList;
 

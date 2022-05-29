@@ -1,11 +1,12 @@
-import {Card, Button,Divider} from "antd";
-import React,{useState}from "react";
+import {Card, Button, Divider, List} from "antd";
+import React, {Component, useState} from "react";
 import '../CSS/Panel.css'
 // import Logo from '../assets/logo192.png'
 // import Lu from '../assets/Lu.jpg'
 import { Typography } from 'antd';
 // import {getTwoToneColor} from "@ant-design/icons";
-import {commonD} from "../MockData/depaData";
+import {commonD,DepartData} from "../MockData/depaData";
+import {doctorList} from "../MockData/cardData";
 // import {doctorList} from "../MockData/cardData";
 
 const { Text, Link } = Typography;
@@ -42,56 +43,61 @@ const clickColor = (e) =>{
 const textColor={
     color: '#0e0e0e',
     strong: 'true',
+
 }
 const changeTextColor = (e) => {
     e.target.style.color='#007bff'
 }
-var tList=commonD;
 
-export default () => {
-    const [ellipsis, setEllipsis] = React.useState(true);
-    const [size, setSize] = useState();
+class Tags extends Component{
 
-    return (
-        <Card hoverable className="showClass">
-            <div className="Left">
-                <div className="tagButton">
-                    <Title level={2} style={textColor} onClick={changeTextColor}>
-                        常见科室
-                    </Title>
-                </div>
-                <div className="tagButton">
-                    <Title level={2} style={textColor} onClick={changeTextColor}>
-                        内科
-                    </Title>
-                </div>
-                <div className="tagButton">
-                    <Title level={2} style={textColor} onClick={changeTextColor}>
-                        外科
-                    </Title>
-                </div>
-                <div className="tagButton">
-                    <Title level={2} style={textColor} onClick={changeTextColor}>
-                        其他
-                    </Title>
-                </div>
-            </div>
-            <Divider className="mDivider"/>
-            <div className="dContainer">
-                {
-                    tList.map((value,index)=>{
-                        return (
-                            <div className="tagButton" key={index} >
-                                <Button type="primary" style={buttonStyle1} size={size}
-                                        onMouseEnter={changeColor} onMouseLeave={recoverColor} >
-                                    <Text strong={true}>{value}</Text>
-                                </Button>
+    state={
+        department:DepartData,
+        tList:commonD,
+
+
+    }
+    changeColor = (e) => {
+        e.target.style.backgroundColor="rgb(131,209,255)"
+    };
+
+    render() {
+        return (
+            <Card hoverable className="showClass">
+                <List
+                    grid={{ gutter: 16, column: 4 }}
+                    className="comment-list"
+                    dataSource={this.state.department}
+                    renderItem={(item, index) => (
+                        <li key={index}>
+                            <div className="tagButton">
+                                <Title level={2}
+                                       onClick={(e)=>this.changeTextColor(e,index)}>
+                                    {this.state.department[index].Dept}
+                                </Title>
                             </div>
-                        )
-                    })
-                }
+                        </li>
+                    )}
+                />
+                <Divider className="mDivider"/>
+                <div className="dContainer">
+                    {
+                        this.state.tList.map((value, index) => {
+                            return (
+                                <div className="tagButton" key={index}>
+                                    <Button type="primary" style={buttonStyle1} size={"large"}
+                                            >
+                                        <Text strong={true}>{value}</Text>
+                                    </Button>
+                                </div>
+                            )
+                        })
+                    }
 
-            </div>
-        </Card>
-    );
+                </div>
+            </Card>
+        );
+    }
 };
+
+export default Tags;
