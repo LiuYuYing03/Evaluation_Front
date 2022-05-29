@@ -167,12 +167,11 @@ class DoctorHome extends Component {
         }
     };
 
-    onChange(){
-
-    }
+    //需要完成新评论的提交的函数
     onSubmit(){
 
     }
+    //提前加载信息
     loadMoreData(){
 
     }

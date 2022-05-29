@@ -71,6 +71,10 @@ class HomePage extends Component {
         });
         console.log(this.state.Visible)
     };
+    //需要完成至少两个函数
+    searchDoctor(e){
+        this.showDrawer(e)
+    }
     goDetail(e){
 
     }
@@ -113,7 +117,7 @@ class HomePage extends Component {
                     </div>
                     <div className="search">
                         <Space direction="vertical">
-                            <Search placeholder="请输入医生姓名" onSearch={(e)=>this.showDrawer(e)} enterButton  size={"large"}
+                            <Search placeholder="请输入医生姓名" onSearch={(e)=>this.searchDoctor(e)} enterButton  size={"large"}
                                     style={{width:"200%"}}  />
                         </Space>
                     </div>
