@@ -1,6 +1,55 @@
-# Getting Started with Create React App
+# Evaluation Front
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Interface
+
+### department
+
+数据格式
+
+```js
+contentList={
+        name : "肝胆外科",
+        description : [
+            content1,
+            content2,
+            content3
+        ],
+        doctor : [
+            {
+                doctorName : "李明",
+                position : "主任医师 教授",
+                doctorDescription : "以肝脏移植和肝胆胰脾肿瘤为专业特长",
+                image : Pic1
+            },
+            {
+                doctorName : "樊华",
+                position : "主任医师 副教授",
+                doctorDescription : "擅长肝脏/胆囊和胆管/胰腺/脾脏系统",
+                image : Pic2
+            },
+            {
+                doctorName : "郎韧",
+                position : "副主任医师 副教授",
+                doctorDescription : "肝胆胰恶性肿瘤手术综合治疗,肝胆胰脾疾病腹腔镜微创手术",
+                image : Pic3
+            },
+            {
+                doctorName : "赵昕",
+                position : "副主任医师 讲师",
+                doctorDescription : "肝移植;胰腺癌手术治疗;肝脏良恶性肿瘤的微创治疗",
+                image : Pic4
+            }
+        ]
+    }
+```
+
+请求接口及类型
+
+```js
+const res = await http.get('/department')
+```
+
+
 
 ## Available Scripts
 
