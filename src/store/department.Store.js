@@ -1,12 +1,11 @@
 import { makeAutoObservable } from 'mobx'
 
-class departmentStore {
-    name=""
-    contentList=[]
+class DepartmentStore {
+    contentList={}
 
     constructor() {
         makeAutoObservable(this)
     }
 
 }
-export default departmentStore;
+export default DepartmentStore;
