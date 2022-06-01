@@ -46,7 +46,7 @@ contentList={
 请求接口及类型
 
 ```js
-const res = await http.get('/department')
+const res = await http.post('/department',{departmentName})
 ```
 
 

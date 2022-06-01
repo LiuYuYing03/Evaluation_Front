@@ -29,6 +29,7 @@ const content3 = '  我们科室为杭州市重点学科、国家教委博士点
 const Department = () => {
     const navigate = useNavigate()
     const { departmentStore } = useStore()
+    const [ departmentName, setDepartmentName ] = useState("肝胆外科")
     const [ contentList, setContentList ] = useState({
         name : "肝胆外科",
         description : [
@@ -65,11 +66,12 @@ const Department = () => {
     })
 
     useEffect(()=>{
-        // async function fetchContentList(){
-        //     const res = await http.get('/department')
-        //     setContentList(res.data.contentList)
-        // }
-        //fetchContentList()
+        setDepartmentName(this.props.location.state.name)
+        async function fetchContentList(){
+            const res = await http.post('/department',{departmentName})
+            setContentList(res.data.contentList)
+        }
+        fetchContentList()
         console.log('副作用执行了')
     },[])
 
