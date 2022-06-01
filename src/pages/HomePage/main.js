@@ -76,7 +76,32 @@ class HomePage extends Component {
         this.showDrawer(e)
     }
     goDetail(e){
-
+        //进行后端数据请求
+        console.log("go detail")
+        var that=this
+        var formData = new FormData();
+        var url="http://localhost:8080/test"
+        for(let k in that.params){
+            formData.append(k, that.params[k]);
+        }
+        formData.append('oper_id', '11');
+        formData.append('oper_name', 'kong');
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        }).then(function(res){
+            if(res.ok){
+                res.json().then(function(data){
+                    console.log(data)
+                    console.log("success");
+                })
+            }else{
+                console.log('请求失败');
+            }
+        }, function(e){
+            console.log('请求失败');
+        })
     }
 
     render() {

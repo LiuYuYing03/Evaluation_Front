@@ -55,9 +55,16 @@ class Tags extends Component{
         department:DepartData,
         tList:commonD,
     }
-    changeColor = (e) => {
-        e.target.style.backgroundColor="rgb(131,209,255)"
-    };
+
+    componentWillMount() {
+        console.log('App-页面即将加载')
+        //
+        // axios.get('/auth/getTemplate').then(res => {
+        //     const {TemplateList = []} = res;
+        //     this.setState({TemplateList});
+        // });
+    }
+
     changeTextColor=(e,index) =>{
         let myList=DepartData[index].cate
         this.setState({
