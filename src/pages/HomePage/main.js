@@ -3,9 +3,9 @@ import 'antd/dist/antd.css';
 import './main.css';
 import {Card,Layout, Menu, Breadcrumb, Dropdown, Col, Row, Avatar, Button, Drawer, Space, List} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import Tags from "../../Components/Panel";
-import SearchBar from '../../Components/search'
-import Show from '../../Components/Card'
+import Tags from "../../components/Panel";
+import SearchBar from '../../components/search'
+import Show from '../../components/Card'
 import { Typography, Switch } from 'antd';
 import Search from "antd/es/input/Search";
 import {doctorList} from '../../MockData/cardData'

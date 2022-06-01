@@ -1,4 +1,4 @@
-import './index.css';
+import './department.css';
 import React from 'react';
 import 'antd/dist/antd.css';
 import { PageHeader } from 'antd';

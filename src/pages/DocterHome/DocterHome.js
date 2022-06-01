@@ -17,7 +17,7 @@ import React, {Component, createElement, useState} from "react";
 import './DocterHome.css'
 import Layout, {Header} from "antd/es/layout/layout";
 import {ArrowLeftOutlined} from "@ant-design/icons";
-import Panel from "../../Components/Panel";
+import Panel from "../../components/Panel"
 import Lu from "../../assets/Lu.jpg";import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import Avatar from "antd/es/avatar/avatar";
 import TextArea from "antd/es/input/TextArea";

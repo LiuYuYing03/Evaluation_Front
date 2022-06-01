@@ -6,7 +6,7 @@ import {Route,  Routes} from 'react-router-dom';
 
 import Home from './pages/Home'
 import HomePage from "./pages/HomePage/main";
-import Department from "./pages/Department";
+import Department from "./pages/Department/department";
 import DoctorHome from "./pages/DocterHome/DocterHome";
 
 function App() {

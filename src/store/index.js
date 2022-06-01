@@ -1,6 +1,7 @@
 // 把所有的模块做统一处理
 // 导出一个统一的方法 useStore
 import React from "react"
+import departmentStore from "./department.Store";
 
 import { configure } from "mobx"
 configure({
@@ -10,7 +11,7 @@ configure({
 
 class RootStore {
     constructor() {
-
+        this.departmentStore = new departmentStore()
     }
 }
 
