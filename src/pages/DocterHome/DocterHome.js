@@ -17,13 +17,15 @@ import React, {Component, createElement, useState} from "react";
 import './DocterHome.css'
 import Layout, {Header} from "antd/es/layout/layout";
 import {ArrowLeftOutlined} from "@ant-design/icons";
-import Panel from "../../components/Panel"
+
 import Lu from "../../assets/Lu.jpg";import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import Avatar from "antd/es/avatar/avatar";
 import TextArea from "antd/es/input/TextArea";
 import {doctorList} from "../../MockData/cardData";
 import VirtualList from 'rc-virtual-list';
 import * as PropTypes from "prop-types";
+import Demo from '../../Components/textArea'
+import {useSearchParams} from "react-router-dom";
 
 
 
@@ -77,6 +79,7 @@ function InfiniteScroll(props) {
     return null;
 }
 
+
 InfiniteScroll.propTypes = {
     loader: PropTypes.element,
     next: PropTypes.any,
@@ -89,8 +92,8 @@ InfiniteScroll.propTypes = {
 
 class DoctorHome extends Component {
 
-
     state = {
+        TextValue:"",
         doctorData:{
             name:"李胜银",
             jobLevel:"主治医师",
@@ -104,6 +107,7 @@ class DoctorHome extends Component {
                 likes: 12,
                 dislikes: 5,
                 likeState:0,
+                commentId: 1,
                 author: 'Han Solo',
                 avatar: 'https://joeschmoe.io/api/v1/random',
                 content: (
@@ -118,6 +122,7 @@ class DoctorHome extends Component {
                 likes: 10,
                 dislikes: 3,
                 actions: 0,
+                commentId: 1,
                 author: 'Han Solo',
                 avatar: 'https://joeschmoe.io/api/v1/random',
                 content: (
@@ -131,7 +136,7 @@ class DoctorHome extends Component {
         ]
     };
 
-    like(e,n) {
+    like(e,n) { //likestate1
         const pdata= [...this.state.data];   //浅拷贝一下
 
         if(pdata[n].likeState!==1){
@@ -147,7 +152,36 @@ class DoctorHome extends Component {
             });
             console.log("111")
         }
+        //将更新数据传回后端
+        this.update(e,n,t_like,t_dislike,this.data[n].likeState)
+
     };
+    update(e,n,t_like,t_dislike,likestate){
+        var formData=new FormData();
+        var url="http://localhost:8080/updatelike"
+        formData.append('doctor_name',this.state.doctorData.name);//医生姓名
+        formData.append('id',this.data[n].commentId)//被更改commentID
+        formData.append('likestate',likestate)
+        formData.append('like',t_like)
+        formData.append('dislike',t_dislike)
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        }).then(function(res){
+            if(res.ok){
+                res.json().then(function(data){
+                    console.log(data)
+                    console.log("success");
+
+                })
+            }else{
+                console.log('更新赞踩请求失败');
+            }
+        }, function(e){
+            console.log('更新赞踩请求失败');
+        })
+    }
 
     dislike(e,n) {
         const ndata= [...this.state.data];   //浅拷贝一下
@@ -165,15 +199,59 @@ class DoctorHome extends Component {
             });
             console.log("111")
         }
+        //将更新数据传回后端
+        this.update(e,n,t_like,t_dislike)
     };
 
-    //需要完成新评论的提交的函数
-    onSubmit(){
 
-    }
     //提前加载信息
-    loadMoreData(){
+    constructor(props){
+        super(props); // 声明constructor时必须调用super方法
+        console.log(this.props); // 可以正常访问this.props
+        let id=localStorage.getItem("ID")
+        console.log("yy",id)
 
+        var formData=new FormData();
+        var url1="http://localhost:8080/initDoctror"
+        var url2="http://localhost:8080/initComment"
+        formData.append('ID',id);//医生姓名
+        fetch(url1, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        }).then(function(res){
+            if(res.ok){
+                res.json().then(function(data){
+                    console.log(data)
+                    console.log("success");
+                    //传回一个data
+
+                })
+            }else{
+                console.log('页面初始化数据请求失败');
+            }
+        }, function(e){
+            console.log('页面初始化数据请求失败');
+        })
+
+        fetch(url2, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        }).then(function(res){
+            if(res.ok){
+                res.json().then(function(data){
+                    console.log(data)
+                    console.log("success");
+                    //传回一个data
+
+                })
+            }else{
+                console.log('页面初始化数据请求失败');
+            }
+        }, function(e){
+            console.log('页面初始化数据请求失败');
+        })
     }
 
     render() {
@@ -243,7 +321,7 @@ class DoctorHome extends Component {
                                             ]
                                         }
                                         author={item.author}
-                                        avatar={item.avatar}
+                                        avatar={'https://joeschmoe.io/api/v1/random'}
                                         content={item.content}
                                     />
                                 </li>
@@ -254,15 +332,17 @@ class DoctorHome extends Component {
                     <div className="interval"/>
                     <Card  className="TextArea">
                     <div className="interval"/>
-                    <Form.Item>
-                        <TextArea rows={4} showCount onChange={this.onChange}  />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button htmlType="submit" loading={false} onClick={this.onSubmit} type="primary">
-                            提交评价
-                        </Button>
-                    </Form.Item>
+                    {/*<Form.Item>*/}
+                    {/*    <TextArea rows={4} showCount onChange={this.onChange}  />*/}
+                    {/*</Form.Item>*/}
+                    {/*<Form.Item>*/}
+                    {/*    <Button htmlType="submit" loading={false} onClick={(e)=>this.onSubmit(e)} type="primary">*/}
+                    {/*        提交评价*/}
+                    {/*    </Button>*/}
+                    {/*</Form.Item>*/}
+                    <Demo name={this.state.doctorData.name} />
                     </Card>
+
                 </div>
             </Layout>
         );

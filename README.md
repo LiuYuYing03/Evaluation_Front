@@ -49,6 +49,168 @@ contentList={
 const res = await http.post('/department',{departmentName})
 ```
 
+### Home/Main.js
+
+1. 请求搜索结果
+
+请求接口：
+
+```
+var url="http://localhost:8080/searchdoctor"
+formData.append('doctor_name',e);
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        })
+```
+
+返回数据类型：
+
+```
+[{
+            "name":"韩钊",
+            "id":1, //医生信息唯一id index
+            "title":"主治医师",
+            "post":"浙大七院 脊柱外科",
+            "score":"4.9",
+            "detail":"从事专科十年，擅长创伤，颈肩痛及腰腿痛的诊治，希望大家在提问的时候能够说明职业，疼痛的位置，有影像学资料更有助于判断病情"
+        }]
+```
+
+### doctorhome
+
+1. 请求页面初始化医生信息
+
+```
+var formData=new FormData();
+        var url="http://localhost:8080/initDoctor"
+        formData.append('ID',id);//医生姓名
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        })
+```
+
+返回数据类型：
+
+```
+doctorData:{
+            name:"李胜银",
+            jobLevel:"主治医师",
+            department:"骨伤科",
+            brief:"We supply a series of design principles, practical patterns and high quality design\n" +
+                "                        resources (Sketch and Axure), to help people create their product prototypes beautifully and\n" +
+                "                        efficiently."
+        }
+```
+
+2. 请求页面初始化评论信息
+
+请求接口：
+
+```
+var formData=new FormData();
+        var url="http://localhost:8080/initComment"
+        formData.append('ID',id);//医生姓名
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        })
+```
+
+返回数据类型：
+
+```
+data: [
+            {
+                likes: 12,
+                dislikes: 5,
+                likeState:0,//用户是否已点踩赞，0未操作，1已赞，2已踩
+                commentId: 1,//评论唯一标识id
+                author: 'Han Solo',
+                content: (
+                    <p>
+                        We supply a series of design principles, practical patterns and high quality design
+                        resources (Sketch and Axure), to help people create their product prototypes beautifully and
+                        efficiently.
+                    </p>
+                )
+            },
+            {
+                likes: 10,
+                dislikes: 3,
+                likeState:0，
+                commentId: 2,
+                author: 'Han Solo',
+                content: (
+                    <p>
+                        We supply a series of design principles, practical patterns and high quality design
+                        resources (Sketch and Axure), to help people create their product prototypes beautifully and
+                        efficiently.
+                    </p>
+                )
+            },
+        ]
+```
+
+3. 更新踩赞结果
+
+请求接口
+
+```
+var formData=new FormData();
+        var url="http://localhost:8080/updatelike"
+        formData.append('doctor_name',this.state.doctorData.name);//医生姓名
+        formData.append('id',this.data[n].commentId)//被更改commentID
+        formData.append('likestate',likestate)//更新后的likestate
+        formData.append('like',t_like)//更新后的赞数
+        formData.append('dislike',t_dislike) //更新后踩数的
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        })
+```
+
+返回数据
+
+```
+无
+```
+
+4. 上传新的comment
+
+请求接口：
+
+```
+var formData=new FormData();
+        var url="http://localhost:8080/addComments"
+        formData.append('doctor_name',name);//医生姓名
+        formData.append('comment',value);//评论内容
+        fetch(url, {
+            method : 'POST',
+            mode : 'cors',
+            body : formData
+        })
+```
+
+返回数据
+
+```
+无
+```
+
+
+
+
+
+
+
+
+
 
 
 ## Available Scripts

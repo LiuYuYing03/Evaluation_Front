@@ -5,7 +5,7 @@ import { PageHeader } from 'antd';
 import { Typography, Divider } from 'antd';
 import { Layout,  Breadcrumb } from 'antd';
 import { Card, Col, Row } from 'antd';
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { useStore } from "../../store";
 import { http } from "../../utils"
@@ -28,6 +28,7 @@ const content3 = '  我们科室为杭州市重点学科、国家教委博士点
 
 const Department = () => {
     const navigate = useNavigate()
+    const params = useParams()
     const { departmentStore } = useStore()
     const [ departmentName, setDepartmentName ] = useState("肝胆外科")
     const [ contentList, setContentList ] = useState({
@@ -76,7 +77,8 @@ const Department = () => {
     },[])
 
     async function goHome(event) {
-        navigate("/", { replace: true });
+        console.log(params.id)
+        navigate("/department/3", { replace: true });
     }
     return (
         <Layout className="layout">
