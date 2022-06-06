@@ -57,6 +57,7 @@ const onSearch = value => console.log(value);
 class HomePage extends Component {
     constructor(props) {
         super(props);
+        // this.searchDoctor=this.searchDoctor.bind(this)
     }
 
     state={
@@ -92,10 +93,10 @@ class HomePage extends Component {
     //需要完成至少两个函数
 
     searchDoctor(e){
-        console.log(e)
+        console.log("get in")
         var that=this
         var formData=new FormData();
-        var url="http://localhost:8080/searchdoctor"
+        var url="http://localhost:8080/searchdoctor/"
         formData.append('doctor_name',e);
         fetch(url, {
             method : 'POST',
@@ -107,8 +108,8 @@ class HomePage extends Component {
                     console.log(data)
                     console.log("success");
                     //对data进行操作
-                    this.setState({
-                        searchRes:data
+                    that.setState({
+                        searchRes:data.data
                     });//更新searchRes
                 })
             }else{
@@ -123,7 +124,8 @@ class HomePage extends Component {
     goDetail(e,index){
         //进行后端数据请求
         console.log("go detail")
-        localStorage.setItem("ID",this.state.id)
+        console.log(this.state.searchRes[index].id);
+        localStorage.setItem("ID",this.state.searchRes[index].id)
         this.setState({
             redirect:true
         })
@@ -191,9 +193,9 @@ class HomePage extends Component {
                                         <Card hoverable
                                               onClick={ (e)=> this.goDetail(e,index)}>
                                             <Title level={4}>{item.name}</Title>
-                                                <div>{item.title}</div>
-                                                <div>{item.detail}</div>
-                                            </Card>
+                                            <div>{item.title}</div>
+                                            <div>{item.detail}</div>
+                                        </Card>
                                     </div>
                                 </li>
                             )}

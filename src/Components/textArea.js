@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import '../CSS/textArea.css';
-import { Comment, Avatar, Form, Button, List, Input } from 'antd';
+import {Comment, Avatar, Form, Button, List, Input, Rate} from 'antd';
 import moment from 'moment';
 const { TextArea } = Input;
 
@@ -20,10 +20,11 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </>
 );
 
-const App = (name) => {
+const App = (id) => {
     const [comments, setComments] = useState([]);
     const [submitting, setSubmitting] = useState(false);
     const [value, setValue] = useState('');
+    const [rateValue, setRateValue] = useState(5);
 
     const handleSubmit = () => {
         if (!value) return;
@@ -35,8 +36,11 @@ const App = (name) => {
         }, 1000);
         var formData=new FormData();
         var url="http://localhost:8080/addComments"
-        formData.append('doctor_name',name);//医生姓名
+        console.log("id",id.name)
+        formData.append('doctor_id',id);//医生姓名
         formData.append('comment',value);//评论内容
+        formData.append('score',rateValue)//评分
+        console.log("rate",rateValue)
         fetch(url, {
             method : 'POST',
             mode : 'cors',
@@ -54,15 +58,23 @@ const App = (name) => {
         }, function(e){
             console.log('上传Comments请求失败');
         })
+        //window.location.reload()
     };
 
     const handleChange = (e) => {
         setValue(e.target.value);
+
     };
+    const changeValue =(e)=>{
+        console.log(e)
+        setRateValue(e)
+    }
 
     return (
         <>
-
+            <div className="Rate" >
+                <Rate allowHalf defaultValue={5} count={10} onChange={(rateValue)=>changeValue(rateValue)}/>
+            </div>
             <Comment
                 avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
                 content={
@@ -72,8 +84,10 @@ const App = (name) => {
                         submitting={submitting}
                         value={value}
                     />
+
                 }
             />
+
         </>
     );
 };

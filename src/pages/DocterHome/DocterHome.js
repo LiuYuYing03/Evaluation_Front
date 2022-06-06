@@ -26,6 +26,7 @@ import VirtualList from 'rc-virtual-list';
 import * as PropTypes from "prop-types";
 import Demo from '../../Components/textArea'
 import {useSearchParams} from "react-router-dom";
+import { toHaveTextContent } from "@testing-library/jest-dom/dist/matchers";
 
 
 
@@ -96,6 +97,9 @@ class DoctorHome extends Component {
         TextValue:"",
         doctorData:{
             name:"李胜银",
+            id:1,
+            score:10,
+            comment_num:10,
             jobLevel:"主治医师",
             department:"骨伤科",
             brief:"We supply a series of design principles, practical patterns and high quality design\n" +
@@ -153,14 +157,17 @@ class DoctorHome extends Component {
             console.log("111")
         }
         //将更新数据传回后端
-        this.update(e,n,t_like,t_dislike,this.data[n].likeState)
+        let a=pdata[n].likeState
+        let id=pdata[n].commentId
+        console.log(a)
+        this.update(id,t_like,t_dislike,1)
 
     };
-    update(e,n,t_like,t_dislike,likestate){
+    update(id,t_like,t_dislike,likestate){
         var formData=new FormData();
-        var url="http://localhost:8080/updatelike"
+        var url="http://localhost:8080/updatelike/"
         formData.append('doctor_name',this.state.doctorData.name);//医生姓名
-        formData.append('id',this.data[n].commentId)//被更改commentID
+        formData.append('id',id)//被更改commentID
         formData.append('likestate',likestate)
         formData.append('like',t_like)
         formData.append('dislike',t_dislike)
@@ -200,7 +207,10 @@ class DoctorHome extends Component {
             console.log("111")
         }
         //将更新数据传回后端
-        this.update(e,n,t_like,t_dislike)
+        let a=ndata[n].likeState
+        let id=ndata[n].commentId
+        console.log(a)
+        this.update(id,t_like,t_dislike,2)
     };
 
 
@@ -210,10 +220,11 @@ class DoctorHome extends Component {
         console.log(this.props); // 可以正常访问this.props
         let id=localStorage.getItem("ID")
         console.log("yy",id)
+        var that=this
 
         var formData=new FormData();
-        var url1="http://localhost:8080/initDoctror"
-        var url2="http://localhost:8080/initComment"
+        var url1="http://localhost:8080/initDoctor/"
+        var url2="http://localhost:8080/initComment/"
         formData.append('ID',id);//医生姓名
         fetch(url1, {
             method : 'POST',
@@ -225,6 +236,9 @@ class DoctorHome extends Component {
                     console.log(data)
                     console.log("success");
                     //传回一个data
+                    that.setState({
+                        doctorData:data.data[0]
+                    })
 
                 })
             }else{
@@ -242,8 +256,11 @@ class DoctorHome extends Component {
             if(res.ok){
                 res.json().then(function(data){
                     console.log(data)
-                    console.log("success");
+                    console.log("success2");
                     //传回一个data
+                    that.setState({
+                        data:data.data
+                    });
 
                 })
             }else{
@@ -277,8 +294,8 @@ class DoctorHome extends Component {
                         </Col>
                         <Col span={1}/>
                         <Col span={8}>
-                            <Title>9.8 分</Title>
-                            <div class="Text">已有35人参与打分</div>
+                            <Title>{this.state.doctorData.score} 分</Title>
+                            <div class="Text">已有{this.state.doctorData.comment_num}人参与打分</div>
                             <div className="Text">职称：{this.state.doctorData.jobLevel}</div>
                             <div className="Text">所属科室：{this.state.doctorData.department}</div>
                             <Paragraph  className="text1">简介: {this.state.doctorData.brief}
@@ -297,50 +314,50 @@ class DoctorHome extends Component {
                                 border: '1px solid rgba(140, 140, 140, 0.35)',
                             }}
                         >
-                        <List
-                            className="comment-list"
-                            header={`该医生共收到 ${this.state.data.length} 条评价`}
-                            itemLayout="horizontal"
-                            dataSource={this.state.data}
-                            renderItem={(item,index) => (
-                                <li key={index}>
-                                    <Comment
-                                        actions={
-                                            [<Tooltip key="comment-basic-like" title="Like">
+                            <List
+                                className="comment-list"
+                                header={`该医生共收到 ${this.state.data.length} 条评价`}
+                                itemLayout="horizontal"
+                                dataSource={this.state.data}
+                                renderItem={(item,index) => (
+                                    <li key={index}>
+                                        <Comment
+                                            actions={
+                                                [<Tooltip key="comment-basic-like" title="Like">
                                             <span onClick={(e)=>this.like(e,index)}>
                                                 {React.createElement(item.likeState === 1 ? LikeFilled : LikeOutlined)}
                                                 <span className="comment-action">{item.likes}</span>
                                             </span>
-                                            </Tooltip>,
-                                            <Tooltip key="comment-basic-like" title="Dislike">
+                                                </Tooltip>,
+                                                    <Tooltip key="comment-basic-like" title="Dislike">
                                             <span onClick={(e)=>this.dislike(e,index)}>
                                                 {React.createElement(item.likeState === 2 ? DislikeFilled : DislikeOutlined)}
                                                 <span className="comment-action">{item.dislikes}</span>
                                             </span>
-                                            </Tooltip>
-                                            ]
-                                        }
-                                        author={item.author}
-                                        avatar={'https://joeschmoe.io/api/v1/random'}
-                                        content={item.content}
-                                    />
-                                </li>
-                            )}
-                        />
+                                                    </Tooltip>
+                                                ]
+                                            }
+                                            author={item.author}
+                                            avatar={'https://joeschmoe.io/api/v1/random'}
+                                            content={item.content}
+                                        />
+                                    </li>
+                                )}
+                            />
                         </div>
                     </Card>
                     <div className="interval"/>
                     <Card  className="TextArea">
-                    <div className="interval"/>
-                    {/*<Form.Item>*/}
-                    {/*    <TextArea rows={4} showCount onChange={this.onChange}  />*/}
-                    {/*</Form.Item>*/}
-                    {/*<Form.Item>*/}
-                    {/*    <Button htmlType="submit" loading={false} onClick={(e)=>this.onSubmit(e)} type="primary">*/}
-                    {/*        提交评价*/}
-                    {/*    </Button>*/}
-                    {/*</Form.Item>*/}
-                    <Demo name={this.state.doctorData.name} />
+                        <div className="interval"/>
+                        {/*<Form.Item>*/}
+                        {/*    <TextArea rows={4} showCount onChange={this.onChange}  />*/}
+                        {/*</Form.Item>*/}
+                        {/*<Form.Item>*/}
+                        {/*    <Button htmlType="submit" loading={false} onClick={(e)=>this.onSubmit(e)} type="primary">*/}
+                        {/*        提交评价*/}
+                        {/*    </Button>*/}
+                        {/*</Form.Item>*/}
+                        <Demo name={this.state.doctorData.id} />
                     </Card>
 
                 </div>
