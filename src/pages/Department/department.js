@@ -67,11 +67,12 @@ const Department = () => {
     })
 
     useEffect(()=>{
-        //setDepartmentName(this.props.location.state.name)
+        setDepartmentName(localStorage.getItem("department"))
+        console.log( localStorage.getItem("department") )
         var msg={name:departmentName}
         console.log(msg)
         async function fetchContentList(){
-            const res = await http.post('/department',JSON.stringify(msg))
+            const res = await http.post('/department/',JSON.stringify(msg))
             setContentList(res.data.contentList)
         }
         fetchContentList()
