@@ -7,6 +7,7 @@ import { Typography } from 'antd';
 // import {getTwoToneColor} from "@ant-design/icons";
 import {commonD,DepartData} from "../MockData/depaData";
 import {doctorList} from "../MockData/cardData";
+import {Navigate} from "react-router-dom";
 // import {doctorList} from "../MockData/cardData";
 
 const { Text, Link } = Typography;
@@ -54,15 +55,12 @@ class Tags extends Component{
     state={
         department:DepartData,
         tList:commonD,
+        detailed:0
     }
 
     componentWillMount() {
         console.log('App-页面即将加载')
-        //
-        // axios.get('/auth/getTemplate').then(res => {
-        //     const {TemplateList = []} = res;
-        //     this.setState({TemplateList});
-        // });
+
     }
 
     changeTextColor=(e,index) =>{
@@ -71,8 +69,20 @@ class Tags extends Component{
             tList:myList
         })
     }
+    goDetail(e,index){
+        let v=this.state.tList[index]
+        console.log(v)
+        localStorage.setItem("department",v)
+        this.setState({
+            detailed:1
+        })
+
+    }
 
     render() {
+        if(this.state.detailed){
+            return <Navigate push to="/department" />;
+        }
         return (
             <Card hoverable className="showClass">
                 <List
@@ -97,7 +107,7 @@ class Tags extends Component{
                             return (
                                 <div className="tagButton" key={index}>
                                     <Button type="primary" style={buttonStyle1} size={"large"}
-                                            >
+                                            onClick={ (e)=> this.goDetail(e,index)}>
                                         <Text strong={true}>{value}</Text>
                                     </Button>
                                 </div>
