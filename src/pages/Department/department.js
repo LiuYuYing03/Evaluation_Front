@@ -27,9 +27,9 @@ const content2 = '  浙大七院肝胆胰脾外科现有医生20人，其中教�
 const content3 = '  我们科室为杭州市重点学科、国家教委博士点学科，也是杭州市肝脏移植中心，每年完成肝脏移植100-150例次，累计完成1500多例次，目前仍存活。在我们中心成功完成杭州市年龄最大的移植受体手术达到80岁。危重症肝病肝移植围手术期存活率达到国际较先进水平，我们在移植术后根据基因表达和细胞状态精准调节免疫药物管理，实时监测免疫状态评分和其它指标，使我们中心术后个体化的免疫药物调节达到国际较领先水平，长期存活的移植患者生活质量极高。\n'
 
 const Department = () => {
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
     const params = useParams()
-    const { departmentStore } = useStore()
+    //const { departmentStore } = useStore()
     const [ departmentName, setDepartmentName ] = useState("肝胆外科")
     const [ contentList, setContentList ] = useState({
         name : "肝胆外科",
@@ -67,8 +67,12 @@ const Department = () => {
     })
 
     useEffect(()=>{
+        setDepartmentName(localStorage.getItem("department"))
+        console.log( localStorage.getItem("department") )
+        var msg={name:departmentName}
+        console.log(msg)
         async function fetchContentList(){
-            const res = await http.post('/department',{departmentName})
+            const res = await http.post('/department/',JSON.stringify(msg))
             setContentList(res.data.contentList)
         }
         fetchContentList()
@@ -77,7 +81,7 @@ const Department = () => {
 
     async function goHome(event) {
         console.log(params.id)
-        navigate("/department/3", { replace: true });
+        //navigate("/department/3", { replace: true });
     }
     return (
         <Layout className="layout">
