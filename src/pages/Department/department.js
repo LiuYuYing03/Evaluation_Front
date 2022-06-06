@@ -67,7 +67,6 @@ const Department = () => {
     })
 
     useEffect(()=>{
-        setDepartmentName(this.props.location.state.name)
         async function fetchContentList(){
             const res = await http.post('/department',{departmentName})
             setContentList(res.data.contentList)
