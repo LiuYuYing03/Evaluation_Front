@@ -65,15 +65,60 @@ const Department = () => {
             }
         ]
     })
+    const [ dep_info, setDep_info ] = useState(
+        [
+            content1,
+            content2,
+            content3
+        ]
+    )
+    const [ doctor_info, setDoctor_info ] = useState(
+        [
+            {
+                doctorName : "李明",
+                position : "主任医师 教授",
+                doctorDescription : "以肝脏移植和肝胆胰脾肿瘤为专业特长"
+            },
+            {
+                doctorName : "樊华",
+                position : "主任医师 副教授",
+                doctorDescription : "擅长肝脏/胆囊和胆管/胰腺/脾脏系统"
+            },
+            {
+                doctorName : "郎韧",
+                position : "副主任医师 副教授",
+                doctorDescription : "肝胆胰恶性肿瘤手术综合治疗,肝胆胰脾疾病腹腔镜微创手术"
+            },
+            {
+                doctorName : "赵昕",
+                position : "副主任医师 讲师",
+                doctorDescription : "肝移植;胰腺癌手术治疗;肝脏良恶性肿瘤的微创治疗"
+            }
+        ]
+    )
+    const [ imageList, setImageList ] = useState(
+        [
+            Pic1,
+            Pic2,
+            Pic3,
+            Pic4
+        ]
+    )
 
     useEffect(()=>{
         setDepartmentName(localStorage.getItem("department"))
         console.log( localStorage.getItem("department") )
-        var msg={name:departmentName}
-        console.log(msg)
+        // let msg={ name : departmentName }
+        var formData = new FormData();
+        formData.append('name', departmentName);
+        console.log(formData)
+        // console.log(JSON.stringify(msg))
         async function fetchContentList(){
-            const res = await http.post('/department/',JSON.stringify(msg))
-            setContentList(res.data.contentList)
+            const res = await http.post('/department/',formData)
+            console.log(res.data)
+            setDep_info(res.data.department.description)
+            setDoctor_info(res.data.doctor_info)
+            //setContentList(res.data.data)
         }
         fetchContentList()
         console.log('副作用执行了')
@@ -102,7 +147,7 @@ const Department = () => {
                     <Typography>
                         <Title level={2}>{contentList.name}</Title>
                         {
-                            contentList.description.map( (item,index)=>{
+                            dep_info.map( (item,index)=>{
                                     return <Paragraph key={index}>{item}</Paragraph>
                                 }
                             )
@@ -113,12 +158,12 @@ const Department = () => {
                             <div className="site-card-wrapper">
                                 <Row gutter={56}>
                                     {
-                                        contentList.doctor.map( (item,index)=>{
+                                        doctor_info.map( (item,index)=>{
                                             return(
                                                 <Col key={index} span={6}>
                                                     <Card
                                                         hoverable
-                                                        cover={<img alt="doctor" src={item.image} height={'280px'}/>}
+                                                        cover={<img alt="doctor" src={Pic1} height={'280px'}/>}
                                                     >
                                                         <Meta title={item.doctorName+" "+item.position}  description={item.doctorDescription} />
                                                     </Card>
