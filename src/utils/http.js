@@ -9,7 +9,7 @@ import { history } from "./history";
 // const navigate = useNavigate()
 
 const http = axios.create({
-    baseURL: 'http://localhost',
+    baseURL: 'http://localhost:8080',
     timeout: 5000
 })
 // 添加请求拦截器

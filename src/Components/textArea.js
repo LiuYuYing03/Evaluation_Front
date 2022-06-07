@@ -35,9 +35,9 @@ const App = (id) => {
             setValue('');
         }, 1000);
         var formData=new FormData();
-        var url="http://localhost:8080/addComments"
+        var url="http://localhost:8080/addComments/"
         console.log("id",id.name)
-        formData.append('doctor_id',id);//医生姓名
+        formData.append('doctor_id',id.name);//医生姓名
         formData.append('comment',value);//评论内容
         formData.append('score',rateValue)//评分
         console.log("rate",rateValue)
