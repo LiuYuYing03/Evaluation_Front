@@ -109,7 +109,7 @@ const Department = () => {
         setDepartmentName(localStorage.getItem("department"))
         console.log( localStorage.getItem("department") )
         var formData = new FormData();
-        formData.append('name', departmentName);
+        formData.append('name', localStorage.getItem("department"));
         console.log(formData)
         async function fetchContentList(){
             const res = await http.post('/department/',formData)
